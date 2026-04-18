@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Cricket Blitz</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a1628;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    canvas { display: block; touch-action: none; }
+
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: #0a1628;
+      color: #f5c518;
+      font-family: Arial Black, sans-serif;
+      font-size: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 100;
+    }
+    #loading small {
+      font-size: 13px;
+      color: #667799;
+      font-family: Arial, sans-serif;
+    }
+
+    #error-box {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #1a0000;
+      color: #ff6666;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 24px;
+      z-index: 200;
+      overflow-y: auto;
+    }
+    #error-box h2 { color: #ff4444; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- Shown while Phaser CDN is downloading -->
+  <div id="loading">
+    CRICKET BLITZ
+    <small>Loading game engine…</small>
+  </div>
+
+  <!-- Shown if anything crashes -->
+  <div id="error-box">
+    <h2>Something went wrong</h2>
+    <p id="error-msg">Unknown error</p>
+    <br>
+    <small>Try closing and reopening the browser tab, or open in incognito mode.</small>
+  </div>
+
+  <script>
+    // Show any JS error on-screen so mobile users can see it
+    window.onerror = function(msg, src, line, col, err) {
+      document.getElementById('loading').style.display = 'none';
+      const box = document.getElementById('error-box');
+      document.getElementById('error-msg').textContent =
+        msg + '\n\n' + (src || '') + ' line ' + line;
+      box.style.display = 'block';
+    };
+  </script>
+
+  <!-- Phaser loaded from CDN — hides loading screen when ready -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"
+    onload="document.getElementById('loading').style.display='none'"
+    onerror="document.getElementById('loading').style.display='none';
+             document.getElementById('error-msg').textContent='Failed to load Phaser game engine. Check your internet connection and refresh.';
+             document.getElementById('error-box').style.display='block'">
+  </script>
+
+  <script type="module" src="src/main.js"></script>
+
+</body>
+</html>
